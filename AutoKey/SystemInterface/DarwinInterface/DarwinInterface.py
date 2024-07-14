@@ -7,4 +7,17 @@ def Darwin_MessageBox(message, title):
             '''
         subprocess.run(script, shell=True)
     except Exception as e:
-        print(f"An error occurred")
+        raise e
+
+def Darwin_InputBox(prompt, title):
+    try:
+        script = f'''
+            tell application "System Events"
+                set user_input to display dialog "{prompt}" with title "{title}" default answer ""
+                return text returned of user_input
+            end tell
+        '''
+        result = subprocess.run(['osascript', '-e', script], capture_output=True, text=True)
+        return result.stdout.strip()
+    except Exception as e:
+        raise e

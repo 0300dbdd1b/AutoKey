@@ -1,3 +1,2 @@
-from AutoKey.SystemInterface.SystemInterface import *
-
-MessageBox('test', 'test')
+from SystemInterface.SystemInterface import *
+InputBox('test', 'test')
