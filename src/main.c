@@ -2,23 +2,28 @@
 #include "string.h"
 #include "stdio.h"
 
-int main(int argc, char **argv)
+
+
+
+
+int main(int argc, char **argv) 
 {
-	if (!strcmp(SYSTEM, "Darwin"))
+	#if defined(PLATFORM_DARWIN)
 	{
-		printf("Darwin");
+    	printf("Building for Darwin\n");
 	}
-	else if (!strcmp(SYSTEM, "Windows"))
+	#elif defined(PLATFORM_LINUX)
 	{
-		printf("Windows");
+    	printf("Building for Linux\n");
 	}
-	else if (!strcmp(SYSTEM, "Linux"))
+	#elif defined(PLATFORM_WINDOWS)
 	{
-		printf("Linux");
+		printf("Building for Windows\n");
 	}
-	else
+	#else
 	{
-		printf("Unsuported OS");
+    	printf("Unsupported system\n");
 	}
-	return 0;
+	#endif
+return 0;
 }

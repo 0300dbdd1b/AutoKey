@@ -1,6 +1,4 @@
-#ifndef WINDOWS
-# define WINDOWS
-# include "Windows_WinFunctions.h"
+#ifndef WINDOWS_H
+# define WINDOWS_H
+#endif
 
-#endif // !WINDOWS
-# define WINDOWS

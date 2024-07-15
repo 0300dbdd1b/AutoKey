@@ -1,6 +1,4 @@
-#ifndef DARWIN
-# define DARWIN
-# include "Darwin_WinFunctions.h"
+#ifndef DARWIN_H
+# define DARWIN_H
+#endif
 
-#endif // !DARWIN
-# define DARWIN

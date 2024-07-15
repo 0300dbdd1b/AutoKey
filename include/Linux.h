@@ -1,8 +1,4 @@
-#ifndef LINUX
-# define LINUX
-# include "Linux_WinFunctions.h"
+#ifndef LINUX_H
+# define LINUX_H
 
-#endif // !LINUX
-# define LINUX
-# include "Linux_WinFunctions.h"
-
+#endif

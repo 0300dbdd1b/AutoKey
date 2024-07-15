@@ -5,25 +5,34 @@ INCDIR = include
 OBJDIR = obj
 BINDIR = bin
 LIBDIR = lib
-DARWINDIR = $(SRCDIR)/SystemManager/Darwin
-LINUXDIR = $(SRCDIR)/SystemManager/Linux
-WINDOWSDIR = $(SRCDIR)/SystemManager/Windows
 
-SRCS = main.c                          \
-        $(DARWINDIR)/WinFunctions.c     \
+AKSCRIPTDIR = $(SRCDIR)/AKScript
+
+DARWINDIR = $(AKSCRIPTDIR)/Darwin
+LINUXDIR = $(AKSCRIPTDIR)/Linux
+WINDOWSDIR = $(AKSCRIPTDIR)/Windows
+
+INCLUDE_DIRS =	$(INCDIR) 			\
+				$(INCDIR)/AKScript	\
+
+INCLUDE_FLAGS = $(addprefix -I, $(INCLUDE_DIRS))
+
+SRCS = main.c							\
+        $(DARWINDIR)/WinFunctions.c		\
         $(LINUXDIR)/WinFunctions.c      \
-        $(WINDOWSDIR)/WinFunctions.c
+        $(WINDOWSDIR)/WinFunctions.c	\
 
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 EXEC = $(BINDIR)/$(NAME)
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -Wall -Wextra $(INCLUDE_FLAGS)
 
 all: detect_os
 
 detect_os:
+	@echo $(INCLUDE_FLAGS)
 	@uname_out=$$(uname -s) || exit 1; \
 	case $${uname_out} in \
 		Darwin*)  $(MAKE) DARWIN_BUILD ;; \
@@ -44,15 +53,15 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 clean:
 	rm -rf $(OBJDIR) $(BINDIR)
 
-DARWIN_BUILD: CFLAGS += -DSYSTEM=\"Darwin\"
+DARWIN_BUILD: CFLAGS += 
 DARWIN_BUILD: $(EXEC)
 	@echo "Building for Darwin (macOS)"
 
-LINUX_BUILD: CFLAGS += -DSYSTEM=\"Linux\"
+LINUX_BUILD: CFLAGS += 
 LINUX_BUILD: $(EXEC)
 	@echo "Building for Linux"
 
-WINDOWS_BUILD: CFLAGS += -DSYSTEM=\"Windows\"
+WINDOWS_BUILD: CFLAGS += 
 WINDOWS_BUILD: $(EXEC)
 	@echo "Building for Windows"
 

@@ -1,10 +1,5 @@
-#ifndef AUTOKEY
-# define AUTOKEY
-# include "Darwin.h"
-# include "Windows.h"
-# include "Linux.h"
-# ifndef SYSTEM
-#  define SYSTEM = "Linux"
-# endif
+#ifndef AUTOKEY_H
+# define AUTOKEY_H
+# include "platform.h"
 
 #endif
