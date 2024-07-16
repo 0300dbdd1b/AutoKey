@@ -1,0 +1,19 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-Iinclude",
+      "-Iinclude/AKScript",
+      "-Ilib/glfw/include",
+      "-c",
+      "-o",
+      "obj/main.o",
+      "src/main.c"
+    ],
+    "directory": "/Users/leslie/Documents/code/AutoKey",
+    "file": "/Users/leslie/Documents/code/AutoKey/src/main.c",
+    "output": "/Users/leslie/Documents/code/AutoKey/obj/main.o"
+  }
+]
