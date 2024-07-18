@@ -6,29 +6,32 @@ OBJDIR = obj
 BINDIR = bin
 LIBDIR = lib
 
-AKSCRIPTDIR = $(SRCDIR)/AKScript
+AKSCRIPTDIR = AKScript
+OSEVENTSDIR = OSEvents
 
-DARWINDIR = $(AKSCRIPTDIR)/Darwin
-LINUXDIR = $(AKSCRIPTDIR)/Linux
-WINDOWSDIR = $(AKSCRIPTDIR)/Windows
 
 INCLUDE_DIRS =	$(INCDIR) 			\
 				$(INCDIR)/AKScript	\
 
 INCLUDE_FLAGS = $(addprefix -I, $(INCLUDE_DIRS))
 
-SRCS = main.c							\
-        $(DARWINDIR)/WinFunctions.c		\
-        $(LINUXDIR)/WinFunctions.c      \
-        $(WINDOWSDIR)/WinFunctions.c	\
 
-SRCS = $(wildcard $(SRCDIR)/*.c)
-OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+CFILES =	main.c									\
+			$(OSEVENTSDIR)/Darwin/EventHandler.c	\
+			$(OSEVENTSDIR)/Darwin/Keyboard.c		\
+        	$(AKSCRIPTDIR)/Darwin/WinFunctions.c	\
+        	$(AKSCRIPTDIR)/Linux/WinFunctions.c     \
+        	$(AKSCRIPTDIR)/Windows/WinFunctions.c	
+
+SRCS = $(addprefix $(SRCDIR)/, $(CFILES))
+
+OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+
 EXEC = $(BINDIR)/$(NAME)
 
 CC = gcc
-CFLAGS = -Wall -Wextra $(INCLUDE_FLAGS) -Ilib/glfw/include
-LDFLAGS = -Llib/glfw/build/src -lglfw3 -lm -ldl -lpthread
+CFLAGS = -Wall -Wextra $(INCLUDE_FLAGS)
+LDFLAGS = -lm -ldl -lpthread
 
 all: detect_os
 
@@ -47,7 +50,7 @@ $(EXEC): $(OBJS)
 	@echo "Build completed for $(NAME)"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@mkdir -p $(OBJDIR)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
@@ -56,16 +59,9 @@ clean:
 fclean: clean
 	rm -rf $(LIBDIR)
 
-glfw:
-	@mkdir -p lib
-	@[ -d lib/glfw ] || git clone https://github.com/glfw/glfw.git lib/glfw
-	@mkdir -p lib/glfw/build
-	cmake -S lib/glfw lib/glfw/build
-	cmake --build lib/glfw/build
-
 DARWIN_BUILD: CFLAGS += 
-DARWIN_BUILD: LDFLAGS += -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore -framework Metal
-DARWIN_BUILD: glfw $(EXEC)
+DARWIN_BUILD: LDFLAGS += -framework Cocoa -framework IOKit -framework CoreFoundation -framework QuartzCore -framework Metal -framework Carbon
+DARWIN_BUILD: $(EXEC)
 	@echo "Building for Darwin (macOS)"
 
 LINUX_BUILD: CFLAGS +=

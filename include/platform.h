@@ -9,7 +9,7 @@
     #include <unistd.h>
 #elif defined(__APPLE__) && defined(__MACH__)
     #define PLATFORM_DARWIN
-    #include <unistd.h>
+    #include "Darwin.h"
 #else
     #error "Unsupported platform"
 #endif
